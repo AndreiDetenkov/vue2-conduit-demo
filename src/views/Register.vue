@@ -48,7 +48,9 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.commit('registerStart')
+      this.$store.dispatch('register', {}).then(user => {
+        console.log('register user successfully ', user)
+      })
     }
   }
 }
