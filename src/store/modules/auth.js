@@ -3,6 +3,7 @@ import {setItem} from '@/helpers/persistanceStorage'
 
 const state = {
   isSubmitting: false,
+  isLoading: false,
   currentUser: null,
   validationErrors: null,
   isLoggedIn: null
@@ -11,10 +12,15 @@ const state = {
 export const mutationTypes = {
   registerStart: '[auth] registerStart',
   registerSuccess: '[auth] registerSuccess',
-  registerFailure: '[aut] registerFailure',
+  registerFailure: '[auth] registerFailure',
+
   loginStart: '[auth] loginStart',
   loginSuccess: '[auth] loginSuccess',
-  loginFailure: '[aut] loginFailure'
+  loginFailure: '[auth] loginFailure',
+
+  getCurrentUserStart: '[auth] getCurrentUserStart',
+  getCurrentUserSuccess: '[auth] getCurrentUserSuccess',
+  getCurrentUserFailure: '[auth] getCurrentUserFailure'
 }
 
 const mutations = {
@@ -43,12 +49,26 @@ const mutations = {
   [mutationTypes.loginFailure](state, payload) {
     state.isSubmitting = false
     state.validationErrors = payload
+  },
+  [mutationTypes.getCurrentUserStart](state) {
+    state.isLoading = true
+  },
+  [mutationTypes.getCurrentUserSuccess](state, payload) {
+    state.isLoading = false
+    state.currentUser = payload
+    state.isLoggedIn = true
+  },
+  [mutationTypes.getCurrentUserFailure](state) {
+    state.isLoading = false
+    state.isLoggedIn = false
+    state.currentUser = null
   }
 }
 
 export const actionTypes = {
   register: '[auth] register',
-  login: '[auth] login'
+  login: '[auth] login',
+  getCurrentUser: '[auth] getCurrentUser'
 }
 
 const actions = {
@@ -79,6 +99,20 @@ const actions = {
         })
         .catch(error => {
           commit(mutationTypes.loginFailure, error.response.data.errors)
+        })
+    })
+  },
+  [actionTypes.getCurrentUser]({commit}) {
+    return new Promise(resolve => {
+      commit(mutationTypes.getCurrentUserStart)
+      authApi
+        .getCurrentUser()
+        .then(response => {
+          commit(mutationTypes.getCurrentUserSuccess, response.data.user)
+          resolve(response.data.user)
+        })
+        .catch(() => {
+          commit(mutationTypes.getCurrentUserFailure)
         })
     })
   }
