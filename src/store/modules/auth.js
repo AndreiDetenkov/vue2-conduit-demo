@@ -12,7 +12,7 @@ const mutations = {
   registerStart(state) {
     state.isSubmitting = true
   },
-  registerSucceess(state, payload) {
+  registerSuccess(state, payload) {
     state.isSubmitting = false
     state.currentUser = payload
     state.isLoggedIn = true
@@ -30,7 +30,7 @@ const actions = {
       authApi
         .register(credentials)
         .then(response => {
-          commit('registerSucceess', response.data.user)
+          commit('registerSuccess', response.data.user)
           setItem('accessToken', response.data.user.token)
           resolve(response.data.user)
         })

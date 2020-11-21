@@ -2,14 +2,19 @@
   <div class="auth-page">
     <div class="container page">
       <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
+        <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Sing up</h1>
           <p class="text-xs-center">
             <router-link :to="{name: 'login'}">
               Need an account?
             </router-link>
           </p>
-          VALIDATION ERRORS
+
+          <mcv-validation-errors
+            v-if="validationErrors"
+            :errors="validationErrors"
+          >
+          </mcv-validation-errors>
 
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
@@ -50,8 +55,13 @@
 </template>
 
 <script>
+import McvValidationErrors from '@/components/ValidationErrors.vue'
+
 export default {
   name: 'McvRegister',
+  components: {
+    McvValidationErrors
+  },
   data() {
     return {
       username: '',
@@ -62,6 +72,9 @@ export default {
   computed: {
     isSubmitting() {
       return this.$store.state.auth.isSubmitting
+    },
+    validationErrors() {
+      return this.$store.state.auth.validationErrors
     }
   },
   methods: {
