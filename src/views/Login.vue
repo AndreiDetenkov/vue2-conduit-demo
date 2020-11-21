@@ -3,10 +3,10 @@
     <div class="container page">
       <div class="row">
         <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Sing up</h1>
+          <h1 class="text-xs-center">Sing in</h1>
           <p class="text-xs-center">
-            <router-link :to="{name: 'login'}">
-              Have an account?
+            <router-link :to="{name: 'register'}">
+              Need an account?
             </router-link>
           </p>
 
@@ -17,14 +17,6 @@
           </mcv-validation-errors>
 
           <form @submit.prevent="onSubmit">
-            <fieldset class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Username"
-                v-model="username"
-              />
-            </fieldset>
             <fieldset class="form-group">
               <input
                 class="form-control"
@@ -45,7 +37,7 @@
               :disabled="isSubmitting"
               class="btn btn-primary pull-xs-right"
             >
-              Sign Up
+              Sign In
             </button>
           </form>
         </div>
@@ -56,18 +48,16 @@
 
 <script>
 import {mapState} from 'vuex'
-
 import McvValidationErrors from '@/components/ValidationErrors.vue'
 import {actionTypes} from '@/store/modules/auth'
 
 export default {
-  name: 'McvRegister',
+  name: 'McvLogin',
   components: {
     McvValidationErrors
   },
   data() {
     return {
-      username: '',
       email: '',
       password: ''
     }
@@ -81,9 +71,8 @@ export default {
   methods: {
     onSubmit() {
       this.$store
-        .dispatch(actionTypes.register, {
+        .dispatch(actionTypes.login, {
           email: this.email,
-          username: this.username,
           password: this.password
         })
         .then(() => {
