@@ -43,7 +43,8 @@
           TAG LIST
         </router-link>
       </div>
-      PAGINATION
+
+      <mcv-pagination :total="total" :limit="limit" :current-page="currentPage" :url="url" />
     </div>
   </div>
 </template>
@@ -51,13 +52,23 @@
 <script>
 import {mapState} from 'vuex'
 import {actionTypes} from '@/store/modules/feed'
+import McvPagination from '@/components/Pagination'
 
 export default {
   name: 'McvFeed',
+  components: {McvPagination},
   props: {
     apiUrl: {
       type: String,
       required: true
+    }
+  },
+  data() {
+    return {
+      total: 500,
+      limit: 10,
+      currentPage: 5,
+      url: '/tags/dragons'
     }
   },
   mounted() {
