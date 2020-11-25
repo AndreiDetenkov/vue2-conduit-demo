@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar">
     <p>Popular Tags</p>
-    <template v-if="isLoading">Loading tags...</template>
 
-    <div v-if="error">Error</div>
+    <mcv-loading v-if="isLoading" />
+    <mcv-error-message v-if="error" />
 
     <div v-if="popularTags" class="tags-list">
       <router-link
@@ -21,9 +21,12 @@
 <script>
 import {mapState} from 'vuex'
 import {actionTypes} from '@/store/modules/popularTags'
+import McvLoading from '@/components/Loading'
+import McvErrorMessage from '@/components/ErrorMessage'
 
 export default {
   name: 'McvPopularTags',
+  components: {McvLoading, McvErrorMessage},
   mounted() {
     this.$store.dispatch(actionTypes.getPopularTags)
   },

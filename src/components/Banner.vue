@@ -9,10 +9,6 @@
 
 <script>
 export default {
-name: "Banner"
+  name: "McvBanner"
 }
 </script>
-
-<style scoped>
-
-</style>
