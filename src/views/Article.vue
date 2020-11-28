@@ -30,7 +30,10 @@
               <i class="ion-edit" />
               Edit Article
             </router-link>
-            <button class="btn btn-outline-danger btn-sm">
+            <button
+              class="btn btn-outline-danger btn-sm"
+              style="margin-left: 8px"
+            >
               <i class="ion-trash-a" />
               Delete Article
             </button>
@@ -58,9 +61,15 @@
 <script>
 import {actionTypes} from '@/store/modules/article'
 import {mapState} from 'vuex'
+import McvLoading from '@/components/Loading'
+import McvErrorMessage from '@/components/ErrorMessage'
 
 export default {
   name: 'McvArticle',
+  components: {
+    McvLoading,
+    McvErrorMessage
+  },
   mounted() {
     this.$store.dispatch(actionTypes.getArticle, {
       slug: this.$route.params.slug
