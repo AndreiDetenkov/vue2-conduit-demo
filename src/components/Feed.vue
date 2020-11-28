@@ -1,7 +1,6 @@
 <template>
   <div>
     <mcv-loading v-if="isLoading" />
-
     <mcv-error-message v-if="error" />
 
     <div v-if="feed">
