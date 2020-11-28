@@ -33,7 +33,7 @@
         </div>
 
         <router-link
-          :to="{name: 'userProfile', params: {slug: article.slug}}"
+          :to="{name: 'article', params: {slug: article.slug}}"
           class="preview-link"
         >
           <h1>{{ article.title }}</h1>
@@ -43,7 +43,12 @@
         </router-link>
       </div>
 
-      <mcv-pagination :total="feed.articlesCount" :limit="limit" :current-page="currentPage" :url="baseUrl" />
+      <mcv-pagination
+        :total="feed.articlesCount"
+        :limit="limit"
+        :current-page="currentPage"
+        :url="baseUrl"
+      />
     </div>
   </div>
 </template>
@@ -56,7 +61,6 @@ import {limit} from '@/helpers/variables'
 import McvPagination from '@/components/Pagination'
 import McvLoading from '@/components/Loading'
 import McvErrorMessage from '@/components/ErrorMessage'
-
 
 export default {
   name: 'McvFeed',
