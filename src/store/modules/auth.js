@@ -20,7 +20,13 @@ export const mutationTypes = {
 
   getCurrentUserStart: '[auth] getCurrentUserStart',
   getCurrentUserSuccess: '[auth] getCurrentUserSuccess',
-  getCurrentUserFailure: '[auth] getCurrentUserFailure'
+  getCurrentUserFailure: '[auth] getCurrentUserFailure',
+
+  updateCurrentUserStart: '[auth] updateCurrentUserStart',
+  updateCurrentUserSuccess: '[auth] updateCurrentUserSuccess',
+  updateCurrentUserFailure: '[auth] updateCurrentUserFailure',
+
+  logout: '[auth] logout'
 }
 
 const mutations = {
@@ -62,13 +68,24 @@ const mutations = {
     state.isLoading = false
     state.isLoggedIn = false
     state.currentUser = null
+  },
+  [mutationTypes.updateCurrentUserStart]() {},
+  [mutationTypes.updateCurrentUserSuccess](state, payload) {
+    state.currentUser = payload
+  },
+  [mutationTypes.updateCurrentUserFailure]() {},
+  [mutationTypes.logout](state) {
+    state.currentUser = null
+    state.isLoggedIn = false
   }
 }
 
 export const actionTypes = {
   register: '[auth] register',
   login: '[auth] login',
-  getCurrentUser: '[auth] getCurrentUser'
+  getCurrentUser: '[auth] getCurrentUser',
+  updateCurrentUser: '[auth] updateCurrentUser',
+  logout: '[auth] logout'
 }
 
 const actions = {
@@ -114,6 +131,30 @@ const actions = {
         .catch(() => {
           commit(mutationTypes.getCurrentUserFailure)
         })
+    })
+  },
+  [actionTypes.updateCurrentUser]({commit}, {currentUserInput}) {
+    return new Promise(resolve => {
+      commit(mutationTypes.updateCurrentUserStart)
+      authApi
+        .updateCurrentUser(currentUserInput)
+        .then(user => {
+          commit(mutationTypes.updateCurrentUserSuccess, user)
+          resolve(user)
+        })
+        .catch(result => {
+          commit(
+            mutationTypes.updateCurrentUserFailure,
+            result.response.data.errors
+          )
+        })
+    })
+  },
+  [actionTypes.logout]({commit}) {
+    return new Promise(resolve => {
+      setItem('accessToken', '')
+      commit(mutationTypes.logout)
+      resolve()
     })
   }
 }
