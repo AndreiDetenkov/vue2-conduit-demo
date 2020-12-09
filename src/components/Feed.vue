@@ -13,7 +13,7 @@
           <router-link
             :to="{name: 'userProfile', params: {slug: article.author.username}}"
           >
-            <img :src="article.author.image" />
+            <img :src="article.author.image" :alt="article.author.image" />
           </router-link>
           <div class="info">
             <router-link
@@ -28,7 +28,11 @@
             <span class="date">{{ article.createdAt }}</span>
           </div>
           <div class="pull-xs-right">
-            ADD TO FAVORITES
+            <mcv-add-to-favorites
+              :is-favorited="article.favorited"
+              :article-slug="article.slug"
+              :favorites-count="article.favoritesCount"
+            />
           </div>
         </div>
 
@@ -63,10 +67,17 @@ import McvPagination from '@/components/Pagination'
 import McvLoading from '@/components/Loading'
 import McvErrorMessage from '@/components/ErrorMessage'
 import McvTagList from '@/components/TagList'
+import McvAddToFavorites from '@/components/AddToFavorites'
 
 export default {
   name: 'McvFeed',
-  components: {McvErrorMessage, McvPagination, McvLoading, McvTagList},
+  components: {
+    McvErrorMessage,
+    McvPagination,
+    McvLoading,
+    McvTagList,
+    McvAddToFavorites
+  },
   props: {
     apiUrl: {
       type: String,
